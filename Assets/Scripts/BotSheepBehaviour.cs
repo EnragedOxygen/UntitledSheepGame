@@ -75,6 +75,7 @@ public class BotSheepBehaviour : SheepBehaviour
         gameFieldPosition = GameObject.FindGameObjectWithTag("GameField").transform.position;
         roamYPlane= gameFieldPosition.y + GameObject.FindGameObjectWithTag("GameField").GetComponent<MeshRenderer>().bounds.size.y/2;        
         moveDestination = SetRoamingPoint();
+        alive = true;
         Alive = true;
     }
        
@@ -147,31 +148,35 @@ public class BotSheepBehaviour : SheepBehaviour
     // Update is called once per frame
     void Update()
     {
-        switch (currentBehaviour) {
-            case BotSheepBehaviourMode.roaming:
-                {
-                    Move();
-                    if (pathComplete())
+        if (Alive)
+        {
+            switch (currentBehaviour)
+            {
+                case BotSheepBehaviourMode.roaming:
                     {
-                      moveDestination = SetRoamingPoint();                        
+                        Move();
+                        if (pathComplete())
+                        {
+                            moveDestination = SetRoamingPoint();
+                        }
+                        break;
                     }
-                    break;
-                }
-            case BotSheepBehaviourMode.runningToSavePoint:
-                {
-                    Move();
-                    moveDestination = new Vector3 (GameObject.FindGameObjectWithTag("Rescue").transform.position.x,roamYPlane, GameObject.FindGameObjectWithTag("Rescue").transform.position.z);
-                    break;
-                }
-            case BotSheepBehaviourMode.disabled:
-                {
-                    
-                    break;
-                }
+                case BotSheepBehaviourMode.runningToSavePoint:
+                    {
+                        Move();
+                        moveDestination = new Vector3(GameObject.FindGameObjectWithTag("Rescue").transform.position.x, roamYPlane, GameObject.FindGameObjectWithTag("Rescue").transform.position.z);
+                        break;
+                    }
+                case BotSheepBehaviourMode.disabled:
+                    {
 
-        }       
+                        break;
+                    }
 
-        animator.SetBool("Moving", rigidBody.velocity != Vector3.zero);       
+            }
+
+            animator.SetBool("Moving", rigidBody.velocity != Vector3.zero);
+        }
        
 
     }

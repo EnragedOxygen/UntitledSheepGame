@@ -13,8 +13,11 @@ public class PlayerSheepBehaviour : SheepBehaviour
     float maxVelocityChange = 2f;
     [SerializeField]
     private float speed=3;
+    [SerializeField]
+    private int playerKnockBack=3;
     private Vector3 MoveVector;
     public bool controlsAreOn=true;
+    
 
     public override bool Alive
     {
@@ -74,7 +77,15 @@ public class PlayerSheepBehaviour : SheepBehaviour
             lookDirection = Vector3.RotateTowards(transform.forward, MoveVector, faceTurnSpeed * Time.deltaTime, 0.0f);
             transform.rotation = Quaternion.LookRotation(lookDirection);
             animator.SetBool("Moving", rigidBody.velocity != Vector3.zero);
-        }
+        }       
 
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "SheepAgent")
+        {
+            collision.gameObject.GetComponent<SheepBehaviour>().Bump(transform, bumpingForce * playerKnockBack);
+        }
     }
 }

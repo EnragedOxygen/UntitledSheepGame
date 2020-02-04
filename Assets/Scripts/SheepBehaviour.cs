@@ -42,10 +42,9 @@ public abstract class SheepBehaviour : MonoBehaviour
         }
         set
         {
-            if (!value)
-            {
-                alive = value;               
-            }
+            
+                alive = value;              
+           
         }
     }
 
